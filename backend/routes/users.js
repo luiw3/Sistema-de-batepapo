@@ -8,8 +8,8 @@ router.get('/',(req,res)=>{
     });
 });
 
-router.get('/:postId', async (req,res)=>{
-    const user = await User.findById(req.params.postId);
+router.get('/:userId', async (req,res)=>{
+    const user = await User.findById(req.params.userId);
     res.json(user);
 });
 
@@ -18,6 +18,8 @@ router.post('/',(req,res)=>{
         name : req.body.name,
         username : req.body.username,
         password : req.body.password,
+        email : req.body.email,
+        birthday: req.body.birthday
     });
 
     user.save()
@@ -27,6 +29,31 @@ router.post('/',(req,res)=>{
     .catch(err=>{
         res.json(err);
     });
+});
+
+router.put('/:userId', async (req,res)=>{
+   const user = await User.findOneAndUpdate(req.params.userId,{
+    name: req.body.name,
+    username: req.body.username,
+   },{
+       returnOriginal: true
+   },(e,d,r)=>{
+       if(e){
+           res.send(e)
+       } else {
+           console.log(d);
+           console.log(r);
+       }
+   });
+   res.json(user);
+});
+
+
+router.delete('/', async (req,res)=>{
+    const user = await User.deleteOne({
+        name: req.body.name
+    });
+    res.json(user.deletedCount);
 });
 
 module.exports = router;
