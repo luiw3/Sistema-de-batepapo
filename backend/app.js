@@ -4,11 +4,13 @@ const mongoose = require('mongoose');
 require('dotenv/config');
 // routes
 const userRoute = require('./routes/users');
+const friendsRoute = require('./routes/friends');
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
 app.use('/users', userRoute);
+app.use('/friends',friendsRoute);
 
 app.get('/', (req,res)=>{
     res.send('teste');
